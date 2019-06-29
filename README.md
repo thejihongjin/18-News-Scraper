@@ -27,9 +27,6 @@ mongoose.connect(MONGODB_URI);
 8. [Watch this demo of a possible submission](https://youtu.be/4ltZr3VPmno). See the deployed demo application [here](http://nyt-mongo-scraper.herokuapp.com/).
 9. Your site doesn't need to match the demo's style, but feel free to attempt something similar if you'd like. Otherwise, just be creative!
 
-### Submission on BCS
-* **This assignment must be deployed.** * Please submit both the deployed Heroku link to your homework AND the link to the Github Repository!
-
 ## Instructions
 * Create an app that accomplishes the following:
   1. Whenever a user visits your site, the app should scrape stories from a news outlet of your choice and display them for the user. Each scraped article should be saved to your application database. At a minimum, the app should scrape and display the following information for each article:
@@ -50,10 +47,6 @@ mongoose.connect(MONGODB_URI);
 * [MongoDB Documentation](https://docs.mongodb.com/manual/)
 * [Mongoose Documentation](http://mongoosejs.com/docs/api.html)
 * [Cheerio Documentation](https://github.com/cheeriojs/cheerio)
----
-
-### Minimum Requirements
-* **This assignment must be deployed.** Attempt to complete homework assignment as described in instructions. If unable to complete certain portions, please pseudocode these portions to describe what remains to be completed. Hosting on Heroku and adding a README.md are required for this homework. In addition, add this homework to your portfolio, more information can be found below.
 ---
 
 ### Create a README.md
