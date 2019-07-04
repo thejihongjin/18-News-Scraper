@@ -6,12 +6,6 @@ https://github.com/thejihongjin/18-News-Scraper
 In this assignment, you'll create a web app that lets users view and leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.
 
 ### Before You Begin
-3. **NOTE**: If you want to earn complete credit for your work, you must use all five of these packages in your assignment.
-   1. express
-   2. express-handlebars
-   3. mongoose
-   4. cheerio
-   5. axios
 <!-- 4. In order to deploy your project to Heroku, you must set up an mLab provision. mLab is remote MongoDB database that Heroku supports natively. Follow these steps to get it running:
 5. Create a Heroku app in your project directory.
 6. Run this command in your Terminal/Bash window:
