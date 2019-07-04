@@ -7,7 +7,7 @@ var axios = require("axios");
 
 var db = require("./models");
 
-// var PORT = 3000;
+var PORT = 3000;
 
 var app = express(); // initializes Express
 app.use(express.urlencoded({ extended: true }));
@@ -15,21 +15,24 @@ app.use(express.json());
 app.use(express.static("public"));
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI); // { useNewUrlParser: true }
 
-app.get("/scrape", function (req, res) {
-    axios.get("https://www.bbc.com/sport/football/womens").then(function (response) {
-        var $ = cheerio.load(response.data);
-    
-        $(".lakeside__content").each(function (i, element) {
-            var result = {};
-            result.title = $(element).children().children().children("span").text();
-            result.summary = $(element).children("p").text() || "N/A";
-            result.link = $(element).children().children().attr("href");
-            if (!result.link.includes("https://www.bbc.co")) {
-                result.link = "https://www.bbc.com" + result.link;
-            }
-            // console.log(result);
-        });
+axios.get("https://www.bbc.com/sport/football/womens").then(function (response) {
+    var $ = cheerio.load(response.data);
+
+    $(".lakeside__content").each(function (i, element) {
+        var result = {};
+        result.title = $(element).children().children().children("span").text();
+        result.summary = $(element).children("p").text() || "N/A";
+        result.link = $(element).children().children().attr("href");
+        if (!result.link.includes("https://www.bbc.co")) {
+            result.link = "https://www.bbc.com" + result.link;
+        }
+        // console.log(result);
     });
 });
+
+
+app.listen(PORT, function() {
+    console.log("App running on port " + PORT + "!");
+  });
