@@ -53,6 +53,15 @@ app.get("/articles", function (req, res) {
     });
 });
 
+app.get("/articles/:id", function (req, res) {
+    db.Article.findOne({ _id: req.params.id })
+        .populate("note")
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        }).catch(function (err) {
+            res.json(err);
+        });
+});
 
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
