@@ -20,7 +20,7 @@ app.set("view engine", "handlebars");
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI); // { useNewUrlParser: true }
 
-app.get("/scrape", function (req, res) {
+app.get("/scrape", function (req, res) { // route for scraping bbc news
     axios.get("https://www.bbc.com/sport/football/womens").then(function (response) {
         var $ = cheerio.load(response.data);
 
@@ -34,7 +34,7 @@ app.get("/scrape", function (req, res) {
             }
             // console.log(result);
 
-            db.Article.create(result).then(function (dbArticle) { // only add if doesn't already exist in db
+            db.Article.create(result).then(function (dbArticle) { // modify to only add if doesn't already exist in db
                 console.log(dbArticle);
             }).catch(function (err) {
                 console.log(err);
@@ -45,7 +45,7 @@ app.get("/scrape", function (req, res) {
     });
 });
 
-app.get("/articles", function (req, res) {
+app.get("/articles", function (req, res) { // route for getting all articles
     db.Article.find({}).then(function (dbArticle) {
         res.json(dbArticle);
     }).catch(function (err) {
@@ -53,7 +53,7 @@ app.get("/articles", function (req, res) {
     });
 });
 
-app.get("/articles/:id", function (req, res) {
+app.get("/articles/:id", function (req, res) { // route for getting one article by id and its notes
     db.Article.findOne({ _id: req.params.id })
         .populate("note")
         .then(function (dbArticle) {
@@ -61,6 +61,16 @@ app.get("/articles/:id", function (req, res) {
         }).catch(function (err) {
             res.json(err);
         });
+});
+
+app.post("/articles/:id", function (req, res) { // route for saving/updating note on specified article
+    db.Note.create(req.body).then(function (dbNote) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+    }).then(function (dbArticle) {
+        res.json(dbArticle);
+    }).catch(function (err) {
+        res.json(err);
+    });
 });
 
 app.listen(PORT, function () {
