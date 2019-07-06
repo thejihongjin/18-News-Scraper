@@ -1,0 +1,56 @@
+<div class="jumbotron bg-dark text-light">
+    <span>Saved Articles</span>
+    <a href="./">View Scraped Articles</a>
+</div>
+<div id="saved-articles">
+    {{#each dbArticle}}
+    {{#if saved}}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{summary}}</p>
+            <a href="{{link}}">{{link}}</a>
+            <button data-toggle="modal" data-target="#exampleModal" class="view-notes" data-id="{{_id}}">View
+                notes</button>
+            <button class="toggle-saved" data-id="{{_id}}" data-newsaved="false">Delete article</button>
+        </div>
+    </div>
+    {{/if}}
+    {{/each}}
+</div>
+
+{{!-- notes modal --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Notes for article ID</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="article-notes">
+                Add cards for notes
+                {{#each dbNote}}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">{{note}}</p>
+                        <button class="btn-danger" id="delete-note" data-id="{{_id}}" data-newsaved="false">x</button>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div>
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" id="notes-form" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <br /><button type="button" class="btn btn-primary" id="save-note">Save note</button>
+            </div>
+        </div>
+    </div>
+</div>

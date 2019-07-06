@@ -6,12 +6,19 @@ var ArticleSchema = new Schema({
         type: String,
         required: true
     },
-    // add Summary - a short summary of the article
+    summary: {
+        type: String,
+        required: true
+    },
     link: {
         type: String,
         required: true
     },
-    note: {
+    saved: {
+        type: Boolean,
+        default: false
+    },
+    note_id: {
         type: Schema.Types.ObjectId,
         ref: "Note"
     }
