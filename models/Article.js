@@ -18,10 +18,12 @@ var ArticleSchema = new Schema({
         type: Boolean,
         default: false
     },
-    note_id: {
-        type: Schema.Types.ObjectId,
-        ref: "Note"
-    }
+    notes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Note"
+        }
+    ]
 });
 
 var Article = mongoose.model("Article", ArticleSchema);

@@ -25,21 +25,21 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Notes for article ID</h5>
+                <h5 class="modal-title" id="note-title">Notes for article {$("#save-note").attr("data-id")}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div id="article-notes">
-                Add cards for notes
-                {{#each dbNote}}
+                {{> notes}}
+                {{!-- {{#each dbArticle}}
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">{{note}}</p>
-                        <button class="btn-danger" id="delete-note" data-id="{{_id}}" data-newsaved="false">x</button>
+                        <p class="card-text">{{text}}</p>
+                        <button class="btn-danger" class="delete-note" data-id="{{_id}}">x</button>
                     </div>
                 </div>
-                {{/each}}
+                {{/each}} --}}
             </div>
             <div>
                 <form>
@@ -49,7 +49,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <br /><button type="button" class="btn btn-primary" id="save-note">Save note</button>
+                <button type="button" class="btn btn-primary" id="save-note" data-id="">Save note</button>
             </div>
         </div>
     </div>
