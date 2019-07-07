@@ -107,7 +107,8 @@ app.post("/notes/:id", function (req, res) { // route for saving/updating note o
             return db.Article.findOneAndUpdate(
                 { _id: req.params.id },
                 { $push: { notes: dbNote._id } },
-                { new: true });
+                { new: true }
+            );
         }).then(function (dbArticle) {
             res.json(dbArticle);
         }).catch(function (err) {

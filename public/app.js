@@ -22,7 +22,7 @@ $(".toggle-saved").on("click", function (event) { // save/delete articles
         url: "/articles/" + id,
         data: newSavedState
     }).then(function (data) {
-        location.reload(); // reload the page to get the updated list
+        location.reload(); // reloads the page to get the updated list
     });
 });
 
@@ -37,12 +37,16 @@ $(".view-notes").on("click", function (event) {
         method: "GET",
         // url: "/notes/" + thisId
         url: `/notes/${thisId}`
-    })
+    }).then(function (data) {
+        // console.log("displaynote " + JSON.stringify(data));
+        displayNotes(data);
+        // addNote(data);
+    });
 });
 
 // When you click the savenote button
 $(document).on("click", "#save-note", function () {
-// $("#save-note").on("click", function (event) {
+    // $("#save-note").on("click", function (event) {
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -51,21 +55,82 @@ $(document).on("click", "#save-note", function () {
             text: $("#notes-form").val()
         }
     }).then(function (data) {
-        console.log(data);
+        // console.log("addnote " + JSON.stringify(data));
+        addNote(data);
     });
 
     $("#notes-form").val("");
 });
 
+
+
+
+
+
+// function addNote(noteData) {
+function displayNotes(noteData) {
+    // console.log("noteData " + noteData.notes[0]);
+    console.log("noteData " + JSON.stringify(noteData));
+    //var cardBody = "";
+    $.ajax({
+        method: "GET",
+        // url: "/notes/" + thisId
+        url: `/notes/${noteData._id}`
+    }).then(function (data) {
+        console.log("data " + JSON.stringify(data));
+        $("#article-notes").empty();
+        for (var i = 0; i < data.length; i++) {
+            var cardBody = $(`<div class="card">
+              <div class="card-body">
+                  <p class="card-text">${data[i].text}</p>
+                  <button class="btn-danger" class="delete-note" data-id="${
+                data[i]._id
+                }">x</button>
+              </div>
+            </div>`);
+            $("#article-notes").append(cardBody);
+        }
+    });
+}
+
+function addNote(noteData) {
+    // console.log("noteData");
+    // console.log(noteData.notes[0]);
+    //var cardBody = "";
+    $.ajax({
+        method: "GET",
+        // url: "/notes/" + thisId
+        url: `/notes/${noteData._id}`
+    }).then(function (data) {
+        console.log("data");
+        console.log(data);
+        $("#article-notes").empty();
+        for (var i = 0; i < data.length; i++) {
+            var cardBody = $(`<div class="card">
+              <div class="card-body">
+                  <p class="card-text">${data[i].text}</p>
+                  <button class="btn-danger delete-note" data-id="${
+                data[i]._id
+                }">x</button>
+              </div>
+            </div>`);
+            $("#article-notes").append(cardBody);
+        }
+
+    });
+}
+
 // delete note
-$(document).on("click", ".delete-note", function () {
-// $(".delete-note").on("click", function (event) {
+$("#article-notes").on("click", ".delete-note", function () {
+    // $(".delete-note").on("click", function (event) {
     console.log("delete btn clicked")
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "DELETE",
         url: "/notes/" + thisId
     }).then(function (data) {
-        location.reload(); // reload the page to get the updated list
+        // location.reload(); // reload the page to get the updated list
+        addNote(data);
+        console.log("deleted?");
     });
 });
