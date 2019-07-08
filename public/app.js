@@ -47,6 +47,7 @@ $(".view-notes").on("click", function (event) {
 // When you click the savenote button
 $(document).on("click", "#save-note", function () {
     // $("#save-note").on("click", function (event) {
+    console.log("hi");
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -56,7 +57,7 @@ $(document).on("click", "#save-note", function () {
         }
     }).then(function (data) {
         // console.log("addnote " + JSON.stringify(data));
-        addNote(data);
+        refreshNotes(data);
     });
 
     $("#notes-form").val("");
@@ -68,55 +69,31 @@ $(document).on("click", "#save-note", function () {
 
 
 // function addNote(noteData) {
-function displayNotes(noteData) {
-    // console.log("noteData " + noteData.notes[0]);
-    console.log("noteData " + JSON.stringify(noteData));
-    //var cardBody = "";
-    $.ajax({
-        method: "GET",
-        // url: "/notes/" + thisId
-        url: `/notes/${noteData._id}`
-    }).then(function (data) {
-        console.log("data " + JSON.stringify(data));
-        $("#article-notes").empty();
-        for (var i = 0; i < data.length; i++) {
-            var cardBody = $(`<div class="card">
-              <div class="card-body">
-                  <p class="card-text">${data[i].text}</p>
-                  <button class="btn-danger" class="delete-note" data-id="${
-                data[i]._id
-                }">x</button>
-              </div>
-            </div>`);
-            $("#article-notes").append(cardBody);
-        }
-    });
-}
-
-function addNote(noteData) {
-    // console.log("noteData");
-    // console.log(noteData.notes[0]);
-    //var cardBody = "";
-    $.ajax({
-        method: "GET",
-        // url: "/notes/" + thisId
-        url: `/notes/${noteData._id}`
-    }).then(function (data) {
-        console.log("data");
-        console.log(data);
-        $("#article-notes").empty();
-        for (var i = 0; i < data.length; i++) {
-            var cardBody = $(`<div class="card">
+function displayNotes(data) {
+    $("#article-notes").empty();
+    for (var i = 0; i < data.length; i++) {
+        var cardBody = $(`<div class="card">
               <div class="card-body">
                   <p class="card-text">${data[i].text}</p>
                   <button class="btn-danger delete-note" data-id="${
-                data[i]._id
-                }">x</button>
+            data[i]._id
+            }">x</button>
               </div>
             </div>`);
-            $("#article-notes").append(cardBody);
-        }
+        $("#article-notes").append(cardBody);
+    }
+}
 
+function refreshNotes(data) {
+    var thisId = data._id;
+    $.ajax({
+        method: "GET",
+        // url: "/notes/" + thisId
+        url: `/notes/${thisId}`
+    }).then(function (data) {
+        //   console.log("displaynotes: ");
+        //   console.log(data);
+        displayNotes(data);
     });
 }
 
@@ -130,7 +107,8 @@ $("#article-notes").on("click", ".delete-note", function () {
         url: "/notes/" + thisId
     }).then(function (data) {
         // location.reload(); // reload the page to get the updated list
-        addNote(data);
+        // refreshNotes(data);
+        displayNotes(data);
         console.log("deleted?");
     });
 });
