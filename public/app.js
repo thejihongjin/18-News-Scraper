@@ -59,13 +59,23 @@ $(document).on("click", "#save-note", function () { // saves note
 
 function displayNotes(data) {
     $("#article-notes").empty();
-    for (var i = 0; i < data.length; i++) {
-        var cardBody = $(`<div class="card">
+    var cardBody;
+    if (!data.length) {
+        cardBody = $(`<div class="card">
+              <div class="card-body text-center">
+                  <span class="card-text">No notes yet.</span>
+              </div>
+            </div>`);
+            $("#article-notes").append(cardBody);
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            cardBody = $(`<div class="card">
               <div class="card-body text-center">
                   <span class="card-text">${data[i].text}</span> <button class="btn-danger delete-note" data-id="${data[i]._id}">x</button>
               </div>
             </div>`);
-        $("#article-notes").append(cardBody);
+            $("#article-notes").append(cardBody);
+        }
     }
 }
 
