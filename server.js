@@ -35,7 +35,7 @@ app.get("/scrape", function (req, res) { // route for scraping bbc news articles
         $(".lakeside__content").each(function (i, element) {
             var result = {};
             result.title = $(element).children().children().children("span").text();
-            result.summary = $(element).children("p").text() || "N/A";
+            result.summary = $(element).children("p").text() || "No summary available.";
             result.link = $(element).children().children().attr("href");
             if (!result.link.includes("https://www.bbc.co")) {
                 result.link = "https://www.bbc.com" + result.link;

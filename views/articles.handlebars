@@ -1,6 +1,6 @@
-<div class="jumbotron bg-dark text-light">
-    <span>Saved Articles</span>
-    <a href="./">View Scraped Articles</a>
+<div class="jumbotron bg-dark text-light text-center">
+    <h1>Saved Articles</h1>
+    <br><span><a href="./">View Scraped Articles</a></span>
 </div>
 <div id="saved-articles">
     {{#each dbArticle}}
@@ -10,8 +10,7 @@
             <h5 class="card-title">{{title}}</h5>
             <p class="card-text">{{summary}}</p>
             <a href="{{link}}">{{link}}</a>
-            <button data-toggle="modal" data-target="#exampleModal" class="view-notes" data-id="{{_id}}">View
-                notes</button>
+            <button data-toggle="modal" data-target="#exampleModal" class="view-notes" data-id="{{_id}}">View notes</button>
             <button class="toggle-saved" data-id="{{_id}}" data-newsaved="false">Delete article</button>
         </div>
     </div>
