@@ -32,15 +32,12 @@ $(".view-notes").on("click", function (event) { // opens modal with notes of sel
     $.ajax({
         method: "GET",
         url: "/notes/" + thisId
-        // url: `/notes/${thisId}`
     }).then(function (data) {
         displayNotes(data);
     });
 });
 
-// When you click the savenote button
-$(document).on("click", "#save-note", function () {
-    // $("#save-note").on("click", function (event) {
+$(document).on("click", "#save-note", function () { // saves note
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -63,10 +60,9 @@ $(document).on("click", "#save-note", function () {
 function displayNotes(data) {
     $("#article-notes").empty();
     for (var i = 0; i < data.length; i++) {
-        console.log(i);
         var cardBody = $(`<div class="card">
               <div class="card-body">
-                  <span class="card-text text-center">${data[i].text}<button class="btn-danger delete-note" data-id="${data[i]._id}">x</button></span>
+                  <span class="card-text text-center">${data[i].text}</span><button class="btn-danger delete-note" data-id="${data[i]._id}">x</button>
               </div>
             </div>`);
         $("#article-notes").append(cardBody);
@@ -74,12 +70,10 @@ function displayNotes(data) {
 }
 
 function refreshNotes(data) {
-    console.log(JSON.stringify(data));
     var thisId = data._id;
     $.ajax({
         method: "GET",
         url: "/notes/" + thisId
-        // url: `/notes/${thisId}`
     }).then(function (data) {
         displayNotes(data);
     });
@@ -90,23 +84,20 @@ function refreshNotesAfterDelete(data) {
     $.ajax({
         method: "GET",
         url: "/notes/" + thisId
-        // url: `/notes/${thisId}`
     }).then(function (data) {
         displayNotes(data);
     });
 }
 
-// delete note
-$("#article-notes").on("click", ".delete-note", function () {
+
+$("#article-notes").on("click", ".delete-note", function () { // deletes note
     var thisId = $(this).attr("data-id");
     var articleId = $("#article-notes").attr("data-articleId");
-    console.log(articleId);
     $.ajax({
         method: "DELETE",
         url: "/notes/" + thisId
     }).then(function (data) {
         data._id = articleId;
         refreshNotes(data);
-        // refreshNotesAfterDelete(data); // tj viewNote
     });
 });
