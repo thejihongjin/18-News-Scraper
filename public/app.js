@@ -40,21 +40,21 @@ $(".view-notes").on("click", function (event) { // opens modal with notes of sel
 $(document).on("click", "#save-note", function () { // saves note
     var thisId = $(this).attr("data-id");
 
-    if ($("#notes-form").val() === "") {
-        alert("Please add note before saving!");
-    } else {
-        $.ajax({
-        method: "POST",
-        url: "/notes/" + thisId,
-        data: {
-            text: $("#notes-form").val()
-        }
-    }).then(function (data) {
-        refreshNotes(data);
-    });
+        if ($("#notes-form").val() === "") {
+            alert("Please add note before saving!");
+        } else {
+            $.ajax({
+                method: "POST",
+                url: "/notes/" + thisId,
+                data: {
+                    text: $("#notes-form").val()
+                }
+            }).then(function (data) {
+                refreshNotes(data);
+            });
 
-    $("#notes-form").val("");
-    }
+            $("#notes-form").val("");
+        }
 });
 
 function displayNotes(data) {
@@ -88,17 +88,6 @@ function refreshNotes(data) {
         displayNotes(data);
     });
 }
-
-function refreshNotesAfterDelete(data) {
-    var thisId = data._id;
-    $.ajax({
-        method: "GET",
-        url: "/notes/" + thisId
-    }).then(function (data) {
-        displayNotes(data);
-    });
-}
-
 
 $("#article-notes").on("click", ".delete-note", function () { // deletes note
     var thisId = $(this).attr("data-id");

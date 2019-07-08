@@ -42,7 +42,7 @@ app.get("/scrape", function (req, res) { // route for scraping bbc news articles
             }
             result.saved = false;
 
-            db.Article.update(
+            db.Article.updateOne(
                 { link: result.link },
                 {
                     $set: {
