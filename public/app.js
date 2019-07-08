@@ -39,7 +39,11 @@ $(".view-notes").on("click", function (event) { // opens modal with notes of sel
 
 $(document).on("click", "#save-note", function () { // saves note
     var thisId = $(this).attr("data-id");
-    $.ajax({
+
+    if ($("#notes-form").val() === "") {
+        alert("Please add note before saving!");
+    } else {
+        $.ajax({
         method: "POST",
         url: "/notes/" + thisId,
         data: {
@@ -50,19 +54,15 @@ $(document).on("click", "#save-note", function () { // saves note
     });
 
     $("#notes-form").val("");
+    }
 });
-
-
-
-
-
 
 function displayNotes(data) {
     $("#article-notes").empty();
     for (var i = 0; i < data.length; i++) {
         var cardBody = $(`<div class="card">
-              <div class="card-body">
-                  <span class="card-text text-center">${data[i].text}</span><button class="btn-danger delete-note" data-id="${data[i]._id}">x</button>
+              <div class="card-body text-center">
+                  <span class="card-text">${data[i].text}</span> <button class="btn-danger delete-note" data-id="${data[i]._id}">x</button>
               </div>
             </div>`);
         $("#article-notes").append(cardBody);
