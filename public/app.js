@@ -1,10 +1,8 @@
-// $(document).on("click", "#scrape-btn", function () {
 $("#scrape-btn").on("click", function (event) { // scrape articles
     $.ajax({
         method: "GET",
         url: "/scrape"
     }).then(function (data) {
-        //console.log(data);
         location.reload();
     });
 });
@@ -26,28 +24,23 @@ $(".toggle-saved").on("click", function (event) { // save/delete articles
     });
 });
 
-
-////////// still needs finishing
-// view notes button should also trigger get to get all notes
-$(".view-notes").on("click", function (event) {
+$(".view-notes").on("click", function (event) { // opens modal with notes of selected article
     var thisId = $(this).attr("data-id");
     $("#save-note").attr("data-id", thisId); // assigns article id to modal save note button
+    $("#article-notes").attr("data-articleId", thisId); // assigns article id to modal notes div
     $("#note-title").text("Notes for article " + $("#save-note").data("id"));
     $.ajax({
         method: "GET",
-        // url: "/notes/" + thisId
-        url: `/notes/${thisId}`
+        url: "/notes/" + thisId
+        // url: `/notes/${thisId}`
     }).then(function (data) {
-        // console.log("displaynote " + JSON.stringify(data));
         displayNotes(data);
-        // addNote(data);
     });
 });
 
 // When you click the savenote button
 $(document).on("click", "#save-note", function () {
     // $("#save-note").on("click", function (event) {
-    console.log("hi");
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -56,7 +49,6 @@ $(document).on("click", "#save-note", function () {
             text: $("#notes-form").val()
         }
     }).then(function (data) {
-        // console.log("addnote " + JSON.stringify(data));
         refreshNotes(data);
     });
 
@@ -68,16 +60,13 @@ $(document).on("click", "#save-note", function () {
 
 
 
-// function addNote(noteData) {
 function displayNotes(data) {
     $("#article-notes").empty();
     for (var i = 0; i < data.length; i++) {
+        console.log(i);
         var cardBody = $(`<div class="card">
               <div class="card-body">
-                  <p class="card-text">${data[i].text}</p>
-                  <button class="btn-danger delete-note" data-id="${
-            data[i]._id
-            }">x</button>
+                  <span class="card-text text-center">${data[i].text}<button class="btn-danger delete-note" data-id="${data[i]._id}">x</button></span>
               </div>
             </div>`);
         $("#article-notes").append(cardBody);
@@ -85,30 +74,39 @@ function displayNotes(data) {
 }
 
 function refreshNotes(data) {
+    console.log(JSON.stringify(data));
     var thisId = data._id;
     $.ajax({
         method: "GET",
-        // url: "/notes/" + thisId
-        url: `/notes/${thisId}`
+        url: "/notes/" + thisId
+        // url: `/notes/${thisId}`
     }).then(function (data) {
-        //   console.log("displaynotes: ");
-        //   console.log(data);
+        displayNotes(data);
+    });
+}
+
+function refreshNotesAfterDelete(data) {
+    var thisId = data._id;
+    $.ajax({
+        method: "GET",
+        url: "/notes/" + thisId
+        // url: `/notes/${thisId}`
+    }).then(function (data) {
         displayNotes(data);
     });
 }
 
 // delete note
 $("#article-notes").on("click", ".delete-note", function () {
-    // $(".delete-note").on("click", function (event) {
-    console.log("delete btn clicked")
     var thisId = $(this).attr("data-id");
+    var articleId = $("#article-notes").attr("data-articleId");
+    console.log(articleId);
     $.ajax({
         method: "DELETE",
         url: "/notes/" + thisId
     }).then(function (data) {
-        // location.reload(); // reload the page to get the updated list
-        // refreshNotes(data);
-        displayNotes(data);
-        console.log("deleted?");
+        data._id = articleId;
+        refreshNotes(data);
+        // refreshNotesAfterDelete(data); // tj viewNote
     });
 });

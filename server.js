@@ -103,10 +103,10 @@ app.get("/notes/:id", function (req, res) { // route for getting one article by 
 
 app.post("/notes/:id", function (req, res) { // route for saving/updating note on specified article
     db.Note.create(req.body)
-        .then(function (dbNote) {
+        .then(function (dbArticle) {
             return db.Article.findOneAndUpdate(
                 { _id: req.params.id },
-                { $push: { notes: dbNote._id } },
+                { $push: { notes: dbArticle._id } },
                 { new: true }
             );
         }).then(function (dbArticle) {
@@ -118,7 +118,9 @@ app.post("/notes/:id", function (req, res) { // route for saving/updating note o
 
 app.delete("/notes/:id", function (req, res) { // route for deleting notes
     db.Note.deleteOne({ _id: req.params.id })
-        .catch(function (err) {
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        }).catch(function (err) {
             res.json(err);
         });
 });
